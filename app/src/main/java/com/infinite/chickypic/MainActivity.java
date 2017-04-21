@@ -14,7 +14,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         new AsyncTask<Void,Void,Void>(){
-
             @Override
             protected Void doInBackground(Void... params) {
 

@@ -4,7 +4,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFF</color>
-    <color name="grey_light">#FF919191</color>
-    <color name="red_theme">#FFFD2154</color>
+    <color name="grey_light">#FFCCCCCC</color>
+    <color name="red_theme">#FF205C</color>
+    <color name="red_theme_dark">#FFFF1744</color>
+    <color name="red_theme_light">#FF1253</color>
     <color name="black">#000000</color>
 </resources>
