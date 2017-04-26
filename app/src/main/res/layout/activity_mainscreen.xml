@@ -13,37 +13,11 @@
             android:layout_height="58dp"
             layout="@layout/ll_mainscreen_bottombar"
             />
-        <android.support.v4.widget.NestedScrollView
-            android:layout_above="@+id/includeMainscreenBotbar"
+        <FrameLayout
+            android:id="@+id/fl_fragment_holder"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/grey_light"
-                android:focusableInTouchMode="true">
-                <RelativeLayout
-                    android:id="@+id/rlVpMainScreenHolder"
-                    android:layout_width="match_parent"
-                    android:layout_height="240dp">
-                    <android.support.v4.view.ViewPager
-                        android:id="@+id/vpMainScreen"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-                    <com.viewpagerindicator.CirclePageIndicator
-                        android:id="@+id/vpIndicatorMainScreen"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:layout_alignBottom="@+id/vpMainScreen"
-                        android:layout_marginBottom="6dp"/>
-                </RelativeLayout>
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rvMainScreen"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-            </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
+            android:layout_height="match_parent"
+            android:layout_above="@+id/includeMainscreenBotbar">
+        </FrameLayout>
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
