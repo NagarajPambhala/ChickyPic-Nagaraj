@@ -2,27 +2,14 @@ package com.infinite.chickypic.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.infinite.chickypic.R;
-import com.infinite.chickypic.adapter.Adapter_RvMainScreen;
 import com.infinite.chickypic.fragment.Fragment_Home;
-import com.infinite.chickypic.fragment.Fragment_MainScreenViewPager;
 import com.infinite.chickypic.fragment.Fragment_StoreMain;
-import com.viewpagerindicator.CirclePageIndicator;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * ujwalv on 13-04-2017.

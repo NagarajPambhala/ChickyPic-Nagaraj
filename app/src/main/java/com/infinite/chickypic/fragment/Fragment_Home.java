@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,8 @@ import android.widget.RelativeLayout;
 
 import com.infinite.chickypic.R;
 import com.infinite.chickypic.adapter.Adapter_RvMainScreen;
+import com.infinite.chickypic.http.BannersPojo;
+import com.infinite.chickypic.http.HttpConstants;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.Timer;
@@ -24,7 +27,7 @@ import java.util.TimerTask;
  * ujwalv on 26-04-2017.
  */
 
-public class Fragment_Home extends Fragment implements ViewPager.OnPageChangeListener{
+public class Fragment_Home extends Fragment implements ViewPager.OnPageChangeListener,HttpConstants.BannersListCallback{
 
     ViewPager vpMainSCreen;
     CirclePageIndicator indicator;
@@ -35,6 +38,7 @@ public class Fragment_Home extends Fragment implements ViewPager.OnPageChangeLis
     RelativeLayout rlVpMainScreenHolder;
     Timer timer;
     int page = 0;
+    BannersPojo bannerObject;
 
     @Nullable
     @Override
@@ -46,7 +50,7 @@ public class Fragment_Home extends Fragment implements ViewPager.OnPageChangeLis
         adapterVpMainScreen = new Adapter_VpMainScreen(getChildFragmentManager());
         vpMainSCreen.setAdapter(adapterVpMainScreen);
         indicator.setViewPager(vpMainSCreen);
-        pageSwitcher(3);
+        pageSwitcher(10);
         linearLayoutManager = new LinearLayoutManager(getActivity());
         rvMainSCreen = (RecyclerView) view.findViewById(R.id.rvMainScreen);
         //rlVpMainScreenHolder.requestFocus();
@@ -61,7 +65,7 @@ public class Fragment_Home extends Fragment implements ViewPager.OnPageChangeLis
         indicator.setFillColor(0xFFFD2154);
         indicator.setStrokeWidth(0);
         //indicator.setStrokeColor(0xFFffd32e);
-
+        HttpConstants.getInstance().bannersList(Fragment_Home.this,"title",0,"id",400);
         return view;
     }
 
@@ -86,7 +90,20 @@ public class Fragment_Home extends Fragment implements ViewPager.OnPageChangeLis
 
     }
 
-    private class Adapter_VpMainScreen extends FragmentPagerAdapter {
+    @Override
+    public void BannersList(BannersPojo bannersPojo) {
+        if(bannersPojo!=null){
+            bannerObject = bannersPojo;
+        }
+        adapterVpMainScreen.notifyDataSetChanged();
+    }
+
+    @Override
+    public void BannersList(String string) {
+
+    }
+
+    private class Adapter_VpMainScreen extends FragmentStatePagerAdapter {
 
         Adapter_VpMainScreen(FragmentManager fm) {
             super(fm);
@@ -94,12 +111,50 @@ public class Fragment_Home extends Fragment implements ViewPager.OnPageChangeLis
 
         @Override
         public Fragment getItem(int position) {
-            return new Fragment_MainScreenViewPager();
+            Fragment fragBanner = new Fragment_HomeScreenBanner();
+            Bundle bund = new Bundle();
+            switch (position){
+                case 0: {
+                    if (bannerObject != null) {
+                        bund.putString(getString(R.string.key_imgurl), bannerObject.getIncluded().get(0).getAttributes().getFilename());
+                    }
+                }
+                break;
+                case 1:{
+                    if (bannerObject != null) {
+                        bund.putString(getString(R.string.key_imgurl), bannerObject.getIncluded().get(position).getAttributes().getFilename());
+                    }
+                }
+                break;
+                case 2:{
+                    if (bannerObject != null) {
+                        bund.putString(getString(R.string.key_imgurl), bannerObject.getIncluded().get(position).getAttributes().getFilename());
+                    }
+                }
+                case 3:{
+                    if (bannerObject != null) {
+                        //bund.putString(getString(R.string.key_imgurl), bannerObject.getIncluded().get(position).getAttributes().getFilename());
+                    }
+                }
+                case 4:{
+                    if (bannerObject != null) {
+                       // bund.putString(getString(R.string.key_imgurl), bannerObject.getIncluded().get(position).getAttributes().getFilename());
+                    }
+                }
+                break;
+            }
+            fragBanner.setArguments(bund);
+            return fragBanner;
         }
 
         @Override
         public int getCount() {
             return 5;
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
         }
     }
 

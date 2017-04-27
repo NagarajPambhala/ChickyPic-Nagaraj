@@ -7,6 +7,8 @@
     app:cardUseCompatPadding="true"
     app:cardElevation="3dp">
     <ImageView
+        android:id="@+id/ivHomeScreen"
+        android:adjustViewBounds="true"
         android:contentDescription="@string/desc_iv_mainscreen_vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

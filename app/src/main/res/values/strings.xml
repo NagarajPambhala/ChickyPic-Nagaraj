@@ -2,4 +2,6 @@
     <string name="app_name">ChickyPic</string>
     <string name="app_logo">Application Logo</string>
     <string name="desc_iv_mainscreen_vp">Sliding images</string>
+    <string name="check_network">Check network connection</string>
+    <string name="key_imgurl">url_banner</string>
 </resources>
