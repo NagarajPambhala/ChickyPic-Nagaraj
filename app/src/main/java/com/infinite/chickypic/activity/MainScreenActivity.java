@@ -9,7 +9,6 @@ import android.widget.RelativeLayout;
 
 import com.infinite.chickypic.R;
 import com.infinite.chickypic.fragment.Fragment_Home;
-import com.infinite.chickypic.fragment.Fragment_StoreMain;
 
 /**
  * ujwalv on 13-04-2017.
@@ -39,24 +38,25 @@ public class MainScreenActivity extends AppCompatActivity implements View.OnClic
         rlContactUs.setOnClickListener(this);
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.rlContactUs: {
+
                 Fragment_Home fragment = new Fragment_Home();
+                if(fragment.isVisible()){
+                    return;
+                }
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.fl_fragment_holder, fragment);
+                ft.replace(R.id.fl_fragment_holder, fragment,"home_fragment");
                 ft.commit();
             }
                 break;
             case R.id.rlBusiness: {
-                Fragment_StoreMain fragment = new Fragment_StoreMain();
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.fl_fragment_holder, fragment);
-                ft.commit();
+
             }
                 break;
         }
     }
+
 }

@@ -21,7 +21,7 @@
             android:layout_height="match_parent"
             android:padding="4dp">
             <TextView
-                android:id="@+id/tvTv1"
+                android:id="@+id/tvHomeTitle"
                 android:layout_alignParentBottom="true"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
@@ -29,9 +29,9 @@
                 android:text="תיקון דים"
                 android:layout_centerHorizontal="true"/>
             <TextView
-                android:id="@+id/tvTv2"
+                android:id="@+id/tvHomeName"
                 android:textStyle="bold"
-                android:layout_above="@+id/tvTv1"
+                android:layout_above="@+id/tvHomeTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" 23 דים"
@@ -40,7 +40,7 @@
             <ImageView
                 android:layout_centerInParent="true"
                 android:src="@drawable/test2"
-                android:layout_above="@+id/tvTv2"
+                android:layout_above="@+id/tvHomeName"
                 android:padding="12dp"
                 android:scaleType="centerInside"
                 android:adjustViewBounds="true"

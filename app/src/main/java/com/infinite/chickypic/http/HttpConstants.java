@@ -7,6 +7,8 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.infinite.chickypic.R;
+import com.infinite.chickypic.fragment.Fragment_Home;
+import com.infinite.chickypic.httpPojos.HomeCategoryListPojo;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -23,7 +25,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * jwalv on 27-04-2017.
+ * ujwalv on 27-04-2017.
  */
 
 public class HttpConstants {
@@ -83,7 +85,6 @@ public class HttpConstants {
     }
 
     public void bannersList(final Fragment fragment, String banner, int offset, String sort,int size) {
-
         Call<BannersPojo> response = HttpConstants.getInstance().getApiInstance(fragment.getContext()).banners(banner,offset,sort,size);
         response.enqueue(new Callback<BannersPojo>(){
             @Override
@@ -106,7 +107,36 @@ public class HttpConstants {
 
             @Override
             public void onFailure(Call<BannersPojo> call, Throwable t) {
+
                 ((BannersListCallback) fragment).BannersList(fragment.getString(R.string.check_network));
+            }
+        });
+    }
+
+    public void categoriesList(final Fragment fragment_home, String title, int i, String id, int i1) {
+        Call<HomeCategoryListPojo> response = HttpConstants.getInstance().getApiInstance(fragment_home.getContext()).categoriesList(title,i,id,i1);
+        response.enqueue(new Callback<HomeCategoryListPojo>(){
+            @Override
+            public void onResponse(Call<HomeCategoryListPojo> call, Response<HomeCategoryListPojo> response) {
+                try {
+                    HomeCategoryListPojo postsPojo;
+                    if(response.code()>=400) {
+                        Gson gson = new Gson();
+                        TypeAdapter<HomeCategoryListPojo> errorResponseT = gson.getAdapter(HomeCategoryListPojo.class);
+                        postsPojo = errorResponseT.fromJson(response.errorBody().string());
+                    }else{
+                        postsPojo = response.body();
+                        Log.i(TAG, "onResponse: ");
+                    }
+                    ((CategoriesListCallback) fragment_home).CategoriesList(postsPojo);
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<HomeCategoryListPojo> call, Throwable t) {
+                ((CategoriesListCallback) fragment_home).CategoriesList(fragment_home.getString(R.string.check_network));
             }
         });
     }
@@ -114,6 +144,12 @@ public class HttpConstants {
     public interface BannersListCallback{
         void BannersList(BannersPojo bannersPojo);
         void BannersList(String string);
+
+    }
+
+    public interface CategoriesListCallback{
+        void CategoriesList(HomeCategoryListPojo bannersPojo);
+        void CategoriesList(String string);
 
     }
     private class NullOnEmptyConverterFactory extends Converter.Factory {

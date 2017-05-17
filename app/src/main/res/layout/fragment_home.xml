@@ -12,11 +12,11 @@
             android:background="@color/grey_light"
             android:focusableInTouchMode="true">
             <RelativeLayout
-                android:id="@+id/rlVpMainScreenHolder"
+                android:id="@+id/rlVpHomeScreenHolder"
                 android:layout_width="match_parent"
                 android:layout_height="240dp">
                 <android.support.v4.view.ViewPager
-                    android:id="@+id/vpMainScreen"
+                    android:id="@+id/vpHomeScreen"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
                 <com.viewpagerindicator.CirclePageIndicator
@@ -24,11 +24,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="2dp"
-                    android:layout_alignBottom="@+id/vpMainScreen"
+                    android:layout_alignBottom="@+id/vpHomeScreen"
                     android:layout_marginBottom="6dp"/>
             </RelativeLayout>
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvMainScreen"
+                android:id="@+id/rvHomeScreen"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </LinearLayout>

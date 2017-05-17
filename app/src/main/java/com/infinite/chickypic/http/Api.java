@@ -1,5 +1,7 @@
 package com.infinite.chickypic.http;
 
+import com.infinite.chickypic.httpPojos.HomeCategoryListPojo;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -15,4 +17,11 @@ public interface Api {
                                      @Query("page[offset]") Integer offset,
                                      @Query("sort") String sort,
                                      @Query("page[size]") Integer size);
+
+
+    @GET("categories")
+    Call<HomeCategoryListPojo> categoriesList(@Query("fields[banner]") String fields,
+                                       @Query("page[offset]") Integer offset,
+                                       @Query("sort") String sort,
+                                       @Query("page[size]") Integer size);
 }

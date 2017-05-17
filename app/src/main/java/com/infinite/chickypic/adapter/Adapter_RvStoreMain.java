@@ -49,7 +49,7 @@ public class Adapter_RvStoreMain extends RecyclerView.Adapter {
             super(itemView);
             //tvName = (TextView) itemView.findViewById(R.id.tvName);
             //ivProfileBg = (ImageView) itemView.findViewById(R.id.ivProfileBg);
-            //rlMainScreenRvItems = (RelativeLayout) itemView.findViewById(R.id.rlMainScreenRvItems);
+            //rlHomeScreenItem = (RelativeLayout) itemView.findViewById(R.id.rlHomeScreenItem);
         }
     }
 }
