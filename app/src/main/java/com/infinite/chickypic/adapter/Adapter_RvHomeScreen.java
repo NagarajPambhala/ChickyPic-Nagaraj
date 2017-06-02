@@ -1,6 +1,7 @@
 package com.infinite.chickypic.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,7 +26,7 @@ import rx.subjects.PublishSubject;
 
 public class Adapter_RvHomeScreen extends RecyclerView.Adapter<Adapter_RvHomeScreen.Viewholder>{
 
-    Context context;
+    private Context context;
     private PublishSubject<PublishObject> publishSubject = PublishSubject.create();
     private List<Fragment_Home.HomeDisplayItems> itemsHome = new ArrayList<>();
 
@@ -36,21 +37,24 @@ public class Adapter_RvHomeScreen extends RecyclerView.Adapter<Adapter_RvHomeScr
 
     @Override
     public Viewholder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_mainscreen_row,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_mainscreen,parent,false);
         context = parent.getContext();
+        Typeface custom_font = Typeface.createFromAsset(context.getAssets(),  "fonts/fbpractica_light.otf");
+        final Viewholder holder = new Viewholder(v);
+        holder.tvTitle.setTypeface(custom_font,Typeface.BOLD);
+        holder.tvName.setTypeface(custom_font,Typeface.BOLD);
         return new Viewholder(v);
     }
 
     @Override
-    public void onBindViewHolder(Viewholder holder, int position) {
-        holder.tvName.setText(itemsHome.get(holder.getAdapterPosition()).getName());
+    public void onBindViewHolder(final Viewholder holder, int position) {
+        holder.tvName.setText(itemsHome.get(holder.getAdapterPosition()).getDescription());
         holder.tvTitle.setText(itemsHome.get(holder.getAdapterPosition()).getTitle());
-        Picasso.with(context).load(itemsHome.get(position).getMainUrl()).placeholder(R.drawable.test).into(holder.ivHomeMainImage);
-        holder.cvHomeScreenItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                publishSubject.onNext(new PublishObject());
-            }
+        Picasso.with(context).load(itemsHome.get(holder.getAdapterPosition()).getMainUrl()).placeholder(R.drawable.test).into(holder.ivHomeMainImage);
+        holder.cvHomeScreenItem.setOnClickListener(v -> {
+            PublishObject po = new PublishObject();
+            po.setId(itemsHome.get(holder.getAdapterPosition()).getId());
+            publishSubject.onNext(po);
         });
     }
 
@@ -70,13 +74,24 @@ public class Adapter_RvHomeScreen extends RecyclerView.Adapter<Adapter_RvHomeScr
 
         Viewholder(View itemView) {
             super(itemView);
-            tvName = (TextView) itemView.findViewById(R.id.tvHomeName);
+            tvName = (TextView) itemView.findViewById(R.id.tvHomeScreenDesc);
             tvTitle = (TextView) itemView.findViewById(R.id.tvHomeTitle);
             ivHomeMainImage = (ImageView) itemView.findViewById(R.id.ivHomeMainImage);
             cvHomeScreenItem = (CardView) itemView.findViewById(R.id.cvHomeScreenItem);
+
+
         }
     }
 
     public class PublishObject {
+        String id;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
     }
 }

@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="bottom_img_size">38dp</dimen>
+    <dimen name="vertical_divider_width">1sp</dimen>
+    <dimen name="cardview_padding">6dp</dimen>
+    <dimen name="title_size">22sp</dimen>
+    <dimen name="description_textsize">18sp</dimen>
+    <dimen name="description_textsize_small">14sp</dimen>
 </resources>

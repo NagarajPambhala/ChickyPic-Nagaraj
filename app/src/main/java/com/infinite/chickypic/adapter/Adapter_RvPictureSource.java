@@ -21,31 +21,29 @@ import rx.subjects.PublishSubject;
  * ujwalv on 26-04-2017.
  */
 
-public class Adapter_RvStoreMain extends RecyclerView.Adapter<Adapter_RvStoreMain.Viewholder> {
+public class Adapter_RvPictureSource extends RecyclerView.Adapter<Adapter_RvPictureSource.Viewholder> {
 
     private Context context;
-    private PublishSubject<StoreProductDetails> publishSubject = PublishSubject.create();
-    public Adapter_RvStoreMain(Context context){
+    private PublishSubject<PictureDetails> publishSubject = PublishSubject.create();
+    public Adapter_RvPictureSource(Context context){
         this.context = context;
     }
 
     @Override
     public Viewholder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_storemain,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_picturesource,parent,false);
         context = parent.getContext();
         final Viewholder holder = new Viewholder(v);
-        holder.tvStoreMainPrice.setTypeface(ApplicationC.getApplicationC().getFbPractica_Light(context), Typeface.BOLD);
+        /*holder.cvPicture.setTypeface(ApplicationC.getApplicationC().getFbPractica_Light(context), Typeface.BOLD);
         holder.tvStoreMainPriceSmall.setTypeface(ApplicationC.getApplicationC().getFbPractica_Light(context), Typeface.BOLD);
-        holder.tvStoreMainProductName.setTypeface(ApplicationC.getApplicationC().getFbPractica_Light(context), Typeface.BOLD);
-        return new Adapter_RvStoreMain.Viewholder(v);
+        holder.tvStoreMainProductName.setTypeface(ApplicationC.getApplicationC().getFbPractica_Light(context), Typeface.BOLD);*/
+        return new Adapter_RvPictureSource.Viewholder(v);
     }
 
     @Override
     public void onBindViewHolder(Viewholder holder, int position) {
-        /**
-         * Basically there r three types of texts
-         */
-        if(position==2 || position ==1){
+
+        /*if(position==2 || position ==1){
             holder.tvStoreMainPrice.setText("₪ 23");
             holder.tvStoreMainPrice.setTextColor(Color.RED);
             holder.tvStoreMainPriceSmall.setVisibility(View.VISIBLE);
@@ -57,15 +55,10 @@ public class Adapter_RvStoreMain extends RecyclerView.Adapter<Adapter_RvStoreMai
             holder.tvStoreMainPriceSmall.setVisibility(View.GONE);
             holder.tvStoreMainPrice.setTextColor(context.getResources().getColor(R.color.grey_text));
             holder.tvStoreMainPrice.setText("תיקון דים - 23 ₪");
-        }
+        }*/
 
 
-        holder.cvStoreProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                publishSubject.onNext(new StoreProductDetails());
-            }
-        });
+        holder.cvPicture.setOnClickListener(v -> publishSubject.onNext(new PictureDetails()));
 
     }
 
@@ -74,27 +67,27 @@ public class Adapter_RvStoreMain extends RecyclerView.Adapter<Adapter_RvStoreMai
         return 21;
     }
 
-    public Observable<StoreProductDetails> getClickPosition() {
+    public Observable<PictureDetails> getClickPosition() {
         return publishSubject.asObservable();
     }
 
     static class Viewholder extends RecyclerView.ViewHolder{
-        TextView tvStoreMainProductName,tvStoreMainPrice,tvStoreMainPriceSmall;
-        ImageView ivProfileBg;
-        CardView cvStoreProduct;
+        //TextView tvStoreMainProductName,tvStoreMainPrice,tvStoreMainPriceSmall;
+        ImageView ivPicSelector,ivPic;
+        CardView cvPicture;
 
         Viewholder(View itemView) {
             super(itemView);
-            tvStoreMainProductName = (TextView) itemView.findViewById(R.id.tvStoreMainProductName);
+            /*tvStoreMainProductName = (TextView) itemView.findViewById(R.id.tvStoreMainProductName);
             tvStoreMainPrice = (TextView) itemView.findViewById(R.id.tvStoreMainPrice);
-            tvStoreMainPriceSmall = (TextView) itemView.findViewById(R.id.tvStoreMainPriceSmall);
-            cvStoreProduct = (CardView) itemView.findViewById(R.id.cvStoreProduct);
-            //tvPrice = (TextView) itemView.findViewById(R.id.tvName);
-            //ivProfileBg = (ImageView) itemView.findViewById(R.id.ivProfileBg);
+            tvStoreMainPriceSmall = (TextView) itemView.findViewById(R.id.tvStoreMainPriceSmall);*/
+            cvPicture = (CardView) itemView.findViewById(R.id.cvPicture);
+            ivPicSelector = (ImageView) itemView.findViewById(R.id.ivPicSelector);
+            ivPic = (ImageView) itemView.findViewById(R.id.ivPic);
             //rlHomeScreenItem = (RelativeLayout) itemView.findViewById(R.id.rlHomeScreenItem);
         }
     }
 
-    public class StoreProductDetails {
+    public class PictureDetails {
     }
 }

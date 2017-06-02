@@ -16,6 +16,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.infinite.chickypic.ApplicationC;
 import com.infinite.chickypic.R;
 
 /**
@@ -50,7 +51,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
     private static final int TITLE_OFFSET_DIPS = 24;
     private static final int TAB_VIEW_PADDING_DIPS = 16;
-    private static final int TAB_VIEW_TEXT_SIZE_SP = 12;
+    private static final int TAB_VIEW_TEXT_SIZE_SP = 19;
 
     private int mTitleOffset;
 
@@ -153,7 +154,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
         TextView textView = new TextView(context);
         textView.setGravity(Gravity.CENTER);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, TAB_VIEW_TEXT_SIZE_SP);
-        textView.setTypeface(Typeface.DEFAULT_BOLD);
+        textView.setTypeface(ApplicationC.getApplicationC().getFbPractica_Regular(getContext()),Typeface.BOLD);
         textView.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
@@ -204,7 +205,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
             if (desc != null) {
                 tabView.setContentDescription(desc);
             }
-            tabTitleView.setTextColor(getResources().getColorStateList(R.color.tab_textcolor));
+            tabTitleView.setTextColor(getResources().getColorStateList(R.color.tab_grey_text));
             mTabStrip.addView(tabView);
             if (i == mViewPager.getCurrentItem()) {
                 tabView.setSelected(true);

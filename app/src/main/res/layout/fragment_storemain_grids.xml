@@ -11,6 +11,7 @@
         app:cardUseCompatPadding="true"
         app:cardElevation="3dp">
         <ImageView
+            android:id="@+id/ivStoreMainFeaturedImage"
             android:adjustViewBounds="true"
             android:contentDescription="@string/desc_iv_mainscreen_vp"
             android:layout_width="match_parent"

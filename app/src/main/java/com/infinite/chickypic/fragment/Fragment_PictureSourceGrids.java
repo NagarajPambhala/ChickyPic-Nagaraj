@@ -1,6 +1,5 @@
 package com.infinite.chickypic.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,8 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.infinite.chickypic.R;
-import com.infinite.chickypic.activity.FullScreenFragmentActivity;
-import com.infinite.chickypic.adapter.Adapter_RvHomeScreen;
+import com.infinite.chickypic.adapter.Adapter_RvPictureSource;
 import com.infinite.chickypic.adapter.Adapter_RvStoreMain;
 import com.squareup.picasso.Picasso;
 
@@ -25,25 +23,26 @@ import rx.Observer;
  * ujwalv on 26-04-2017.
  */
 
-public class Fragment_StoreMainGrids extends Fragment{
+public class Fragment_PictureSourceGrids extends Fragment{
 
     RecyclerView rvStoreMainGrid;
     GridLayoutManager gridLayoutManager;
-    Adapter_RvStoreMain rvStoreMainAdapter ;
+    Adapter_RvPictureSource adapterRvPictureSource ;
     ImageView ivStoreMainFeaturedImage;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_storemain_grids,container,false);
+        View view = inflater.inflate(R.layout.fragment_picturesource_grids,container,false);
         rvStoreMainGrid = (RecyclerView) view.findViewById(R.id.rvStoreMainGrid);
         ivStoreMainFeaturedImage = (ImageView) view.findViewById(R.id.ivStoreMainFeaturedImage);
-        gridLayoutManager = new GridLayoutManager(getActivity(),2);
-        rvStoreMainAdapter = new Adapter_RvStoreMain(getContext());
+        gridLayoutManager = new GridLayoutManager(getActivity(),3);
+        adapterRvPictureSource = new Adapter_RvPictureSource(getContext());
         rvStoreMainGrid.setLayoutManager(gridLayoutManager);
-        rvStoreMainGrid.setAdapter(rvStoreMainAdapter);
-        Picasso.with(getContext()).load(getArguments().getString("featured_img")).into(ivStoreMainFeaturedImage);
+        rvStoreMainGrid.setAdapter(adapterRvPictureSource);
+        //Picasso.with(getContext()).load(getArguments().getString("featured_img")).into(ivStoreMainFeaturedImage);
 
-        Observable<Adapter_RvStoreMain.StoreProductDetails> observer = rvStoreMainAdapter.getClickPosition();
+        /*Observable<Adapter_RvStoreMain.StoreProductDetails> observer = adapterRvPictureSource.getClickPosition();
         observer.subscribe(new Observer<Adapter_RvStoreMain.StoreProductDetails>() {
             @Override
             public void onCompleted() {
@@ -63,7 +62,7 @@ public class Fragment_StoreMainGrids extends Fragment{
                 transaction.replace(R.id.fl_fullscreen_fragment_holder,fragment,"tag_productdetails");
                 transaction.commit();
             }
-        });
+        });*/
 
         return view;
     }

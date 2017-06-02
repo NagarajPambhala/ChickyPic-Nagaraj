@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/abLayoutProductDetailsInfo"
+        android:layout_width="match_parent"
+        android:layout_height="54dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="העמודים"
+            android:textColor="@color/white"
+            android:textSize="21sp"
+            android:textStyle="bold" />
+    </android.support.design.widget.AppBarLayout>
+    <TextView
+        android:id="@+id/tvProductDetailsInfo"
+        android:text="תיקון דים תיקון דים תיקון דים תיקון דים תיקון דים תיקון דים תתיקון דיםתיקון דיםתיקון דיםתיקון דיםתיקון דיםתיקון דיםתיקון דיםתיקון דיםתיקון דיםתיקון דיםתיקון דיםתיקון דיםתיקון דיםתיקון דיםתיקון דיםתיקון דיםיקון דים"
+        android:textSize="18sp"
+        android:padding="18dp"
+        android:layout_below="@+id/abLayoutProductDetailsInfo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</RelativeLayout>

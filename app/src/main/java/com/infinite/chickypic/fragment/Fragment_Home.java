@@ -1,12 +1,14 @@
 package com.infinite.chickypic.fragment;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -49,8 +51,7 @@ public class Fragment_Home extends Fragment implements ViewPager.OnPageChangeLis
     Timer timer;
     int page = 0;
     BannersPojo bannerObject;
-    private List<HomeDisplayItems> itemsHome = new ArrayList<>();
-    private Observable<Adapter_RvHomeScreen.PublishObject> observer ;
+    private ArrayList<HomeDisplayItems> itemsHome = new ArrayList<>();
     private static final String TAG = "Fragment_Home";
 
     @Nullable
@@ -63,7 +64,7 @@ public class Fragment_Home extends Fragment implements ViewPager.OnPageChangeLis
         adapterVpHomeScreen = new Adapter_VpHomeScreen(getChildFragmentManager());
         vpHomeSCreen.setAdapter(adapterVpHomeScreen);
         indicator.setViewPager(vpHomeSCreen);
-        pageSwitcher(10);
+        pageSwitcher(3);
         linearLayoutManager = new LinearLayoutManager(getActivity());
         rvHomeScreen = (RecyclerView) view.findViewById(R.id.rvHomeScreen);
         //rlVpHomeScreenHolder.requestFocus();
@@ -77,10 +78,10 @@ public class Fragment_Home extends Fragment implements ViewPager.OnPageChangeLis
         indicator.setPageColor(0xFFFFFFFF);
         indicator.setFillColor(0xFFFD2154);
         indicator.setStrokeWidth(0);
-        //indicator.setStrokeColor(0xFFffd32e);
         HttpConstants.getInstance().bannersList(Fragment_Home.this,"title",0,"id",400);
         HttpConstants.getInstance().categoriesList(Fragment_Home.this,"title",0,"id",400);
-        observer = adapterRvHomeScreen.getClickPosition();
+
+        Observable<Adapter_RvHomeScreen.PublishObject> observer = adapterRvHomeScreen.getClickPosition();
         observer.subscribe(new Observer<Adapter_RvHomeScreen.PublishObject>() {
             @Override
             public void onCompleted() {
@@ -94,11 +95,17 @@ public class Fragment_Home extends Fragment implements ViewPager.OnPageChangeLis
 
             @Override
             public void onNext(Adapter_RvHomeScreen.PublishObject publishObject) {
-                Log.i(TAG, "onNext: ");
                 Intent intent = new Intent(getActivity(), FullScreenFragmentActivity.class);
+                intent.putExtra("fragment","storemain");
+                intent.putExtra("clicked_id",publishObject.getId());
+                intent.putParcelableArrayListExtra("home_categories",itemsHome);
                 startActivity(intent);
             }
         });
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.grey_light));
+        }
         return view;
     }
 
@@ -142,7 +149,7 @@ public class Fragment_Home extends Fragment implements ViewPager.OnPageChangeLis
         List<HomeCategoryListPojo.Included> included = bannersPojo.getIncluded();
         if(items!=null && items.size()>0){
             for(int i=0;i<items.size();i++){
-                HomeDisplayItems homeObj = new HomeDisplayItems(items.get(i).getAttributes().getName(),items.get(i).getAttributes().getTitle());
+                HomeDisplayItems homeObj = new HomeDisplayItems(items.get(i).getId(),items.get(i).getAttributes().getDescription(),items.get(i).getAttributes().getTitle());
 
                 //TODO it will be nice if we can avoid this loop all together by changing server response
                 for(int j=0;j<included.size();j++){
@@ -176,35 +183,8 @@ public class Fragment_Home extends Fragment implements ViewPager.OnPageChangeLis
         public Fragment getItem(int position) {
             Fragment fragBanner = new Fragment_HomeScreenBanner();
             Bundle bund = new Bundle();
-            switch (position){
-                case 0: {
-                    if (bannerObject != null) {
-                        bund.putString(getString(R.string.key_imgurl), bannerObject.getIncluded().get(0).getAttributes().getFilename());
-                    }
-                }
-                break;
-                case 1:{
-                    if (bannerObject != null) {
-                        bund.putString(getString(R.string.key_imgurl), bannerObject.getIncluded().get(position).getAttributes().getFilename());
-                    }
-                }
-                break;
-                case 2:{
-                    if (bannerObject != null) {
-                        bund.putString(getString(R.string.key_imgurl), bannerObject.getIncluded().get(position).getAttributes().getFilename());
-                    }
-                }
-                case 3:{
-                    if (bannerObject != null) {
-                        //bund.putString(getString(R.string.key_imgurl), bannerObject.getIncluded().get(position).getAttributes().getFilename());
-                    }
-                }
-                case 4:{
-                    if (bannerObject != null) {
-                       // bund.putString(getString(R.string.key_imgurl), bannerObject.getIncluded().get(position).getAttributes().getFilename());
-                    }
-                }
-                break;
+            if (bannerObject != null) {
+                bund.putString(getString(R.string.key_imgurl), bannerObject.getIncluded().get(position).getAttributes().getFilename());
             }
             fragBanner.setArguments(bund);
             return fragBanner;
@@ -212,7 +192,14 @@ public class Fragment_Home extends Fragment implements ViewPager.OnPageChangeLis
 
         @Override
         public int getCount() {
-            return 5;
+            if(bannerObject==null){
+                return 0;
+            }
+            if(bannerObject.getIncluded().size()<=5) {
+                return bannerObject.getIncluded().size();
+            }else{
+                return 5;
+            }
         }
 
         @Override
@@ -253,7 +240,7 @@ public class Fragment_Home extends Fragment implements ViewPager.OnPageChangeLis
         }
     }
 
-    public class HomeDisplayItems {
+    /*public class HomeDisplayItems {
         String name,title, mainUrl,featuredUrl;
 
         public HomeDisplayItems(String name,String title){
@@ -292,5 +279,95 @@ public class Fragment_Home extends Fragment implements ViewPager.OnPageChangeLis
         public void setFeaturedUrl(String featuredUrl) {
             this.featuredUrl = featuredUrl;
         }
+    }*/
+
+    public static class HomeDisplayItems implements Parcelable {
+        String id;
+        String description;
+        String title;
+        String mainUrl;
+        String featuredUrl;
+
+        HomeDisplayItems(String id,String description, String title){
+            this.id = id;
+            this.description = description;
+            this.title = title;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getMainUrl() {
+            return mainUrl;
+        }
+
+        void setMainUrl(String mainUrl) {
+            this.mainUrl = mainUrl;
+        }
+
+        public String getFeaturedUrl() {
+            return featuredUrl;
+        }
+
+        void setFeaturedUrl(String featuredUrl) {
+            this.featuredUrl = featuredUrl;
+        }
+
+        HomeDisplayItems(Parcel in) {
+            id = in.readString();
+            description = in.readString();
+            title = in.readString();
+            mainUrl = in.readString();
+            featuredUrl = in.readString();
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(id);
+            dest.writeString(description);
+            dest.writeString(title);
+            dest.writeString(mainUrl);
+            dest.writeString(featuredUrl);
+        }
+
+        @SuppressWarnings("unused")
+        public static final Parcelable.Creator<HomeDisplayItems> CREATOR = new Parcelable.Creator<HomeDisplayItems>() {
+            @Override
+            public HomeDisplayItems createFromParcel(Parcel in) {
+                return new HomeDisplayItems(in);
+            }
+
+            @Override
+            public HomeDisplayItems[] newArray(int size) {
+                return new HomeDisplayItems[size];
+            }
+        };
     }
+
 }

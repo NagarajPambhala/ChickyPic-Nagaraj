@@ -16,32 +16,33 @@
         app:cardElevation="2dp"
         app:cardCornerRadius="3dp">
         <RelativeLayout
-
             android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="4dp">
+            android:padding="@dimen/cardview_padding">
             <TextView
                 android:id="@+id/tvHomeTitle"
-                android:textStyle="bold"
+                android:textSize="@dimen/title_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="תיקון ודיוק מסמך אקסל של העמודים"
                 android:layout_centerHorizontal="true"
-                android:textColor="@color/red_theme"/>
+                android:textColor="@color/red_theme_light"/>
             <TextView
-                android:id="@+id/tvHomeName"
+                android:textSize="@dimen/description_textsize"
+                android:id="@+id/tvHomeScreenDesc"
                 android:layout_below="@+id/tvHomeTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="תיקון ודיוק מסמך אקסל של העמודים"
+                android:gravity="center"
+                android:text="תיקון ודיוק  מסמך אקסל של המסמך אקסל של המסמך אקסל של המסמך אקסל של העמודים"
                 android:layout_centerHorizontal="true"
-                android:textColor="@color/black"/>
+                android:textColor="@color/grey_text"/>
             <ImageView
                 android:id="@+id/ivHomeMainImage"
                 android:layout_centerInParent="true"
                 android:src="@drawable/test2"
-                android:layout_below="@+id/tvHomeName"
+                android:layout_below="@+id/tvHomeScreenDesc"
                 android:padding="12dp"
                 android:scaleType="centerInside"
                 android:adjustViewBounds="true"

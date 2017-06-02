@@ -4,4 +4,8 @@
     <string name="desc_iv_mainscreen_vp">Sliding images</string>
     <string name="check_network">Check network connection</string>
     <string name="key_imgurl">url_banner</string>
+    <string name="_23">₪ 23</string>
+    <string name="temp">תיקון דים</string>
+    <string name="title_storemain">חנות המוצרים</string>
+    <string name="back"><![CDATA[<חזור]]></string>
 </resources>
