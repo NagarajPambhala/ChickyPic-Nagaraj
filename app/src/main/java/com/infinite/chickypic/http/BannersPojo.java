@@ -5,11 +5,13 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import moe.banana.jsonapi2.Resource;
+
 /**
  * ujwalv on 27-04-2017.
  */
 
-public class BannersPojo {
+public class BannersPojo extends Resource{
 
     @SerializedName("data")
     @Expose

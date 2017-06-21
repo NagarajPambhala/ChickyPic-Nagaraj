@@ -60,12 +60,7 @@ public class Adapter_RvStoreMain extends RecyclerView.Adapter<Adapter_RvStoreMai
         }
 
 
-        holder.cvStoreProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                publishSubject.onNext(new StoreProductDetails());
-            }
-        });
+        holder.cvStoreProduct.setOnClickListener(v -> publishSubject.onNext(new StoreProductDetails()));
 
     }
 

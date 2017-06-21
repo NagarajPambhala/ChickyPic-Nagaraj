@@ -9,11 +9,15 @@ import com.google.gson.TypeAdapter;
 import com.infinite.chickypic.R;
 import com.infinite.chickypic.fragment.Fragment_Home;
 import com.infinite.chickypic.httpPojos.HomeCategoryListPojo;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
+import moe.banana.jsonapi2.Document;
+import moe.banana.jsonapi2.ResourceAdapterFactory;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -30,7 +34,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HttpConstants {
 
-    public static final String BASE_URL = "http://109.226.9.246/api/";
+    private static final String BASE_URL = "http://109.226.9.246/api/";
     private static HttpConstants instance=null;
     private static final String TAG = "HttpConstants";
 
@@ -50,6 +54,17 @@ public class HttpConstants {
 
         //CookieManager cookieManager = new CookieManager();
         //cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+
+        JsonAdapter.Factory jsonApiAdapterFactory = ResourceAdapterFactory.builder()
+                .add(MediaItems.class)
+                .add(Banners.class)
+                .add(Unknown.class)
+                .add(Categories.class)
+                .build();
+
+        Moshi moshi = new Moshi.Builder()
+                .add(jsonApiAdapterFactory)
+                .build();
 
         HttpLoggingInterceptor logInter = new HttpLoggingInterceptor();
         logInter.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -76,15 +91,16 @@ public class HttpConstants {
                 .build();
 
         Retrofit retrofitInstance = new Retrofit.Builder()
-                .addConverterFactory(new NullOnEmptyConverterFactory())
-                .addConverterFactory(GsonConverterFactory.create())
+                //.addConverterFactory(new NullOnEmptyConverterFactory())
+                //.addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(JsonApiConverterFactory.create(moshi))
                 .baseUrl(BASE_URL)
                 .client(mIntercepter)
                 .build();
         return retrofitInstance.create(Api.class);
     }
 
-    public void bannersList(final Fragment fragment, String banner, int offset, String sort,int size) {
+    /*public void bannersList(final Fragment fragment, String banner, int offset, String sort,int size) {
         Call<BannersPojo> response = HttpConstants.getInstance().getApiInstance(fragment.getContext()).banners(banner,offset,sort,size);
         response.enqueue(new Callback<BannersPojo>(){
             @Override
@@ -111,9 +127,39 @@ public class HttpConstants {
                 ((BannersListCallback) fragment).BannersList(fragment.getString(R.string.check_network));
             }
         });
+    }*/
+
+    public void bannersList(final Fragment fragment, String banner, int offset, String sort,int size) {
+        Call<Banners[]> response = HttpConstants.getInstance().getApiInstance(fragment.getContext()).banners(banner,offset,sort,size);
+        response.enqueue(new Callback<Banners[]>(){
+            @Override
+            public void onResponse(Call<Banners[]> call, Response<Banners[]> response) {
+                try {
+                    Banners[] postsPojo;
+                    if(response.code()>=400) {
+                        Gson gson = new Gson();
+                        TypeAdapter<Banners[]> errorResponseT = gson.getAdapter(Banners[].class);
+                        postsPojo = errorResponseT.fromJson(response.errorBody().string());
+                    }else{
+                        postsPojo = response.body();
+                        Log.i(TAG, "onResponse: ");
+                    }
+                    ((BannersListCallback) fragment).BannersList(postsPojo);
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Banners[]> call, Throwable t) {
+
+                ((BannersListCallback) fragment).BannersList(fragment.getString(R.string.check_network));
+            }
+        });
     }
 
-    public void categoriesList(final Fragment fragment_home, String title, int i, String id, int i1) {
+
+    /*public void categoriesList(final Fragment fragment_home, String title, int i, String id, int i1) {
         Call<HomeCategoryListPojo> response = HttpConstants.getInstance().getApiInstance(fragment_home.getContext()).categoriesList(title,i,id,i1);
         response.enqueue(new Callback<HomeCategoryListPojo>(){
             @Override
@@ -139,10 +185,39 @@ public class HttpConstants {
                 ((CategoriesListCallback) fragment_home).CategoriesList(fragment_home.getString(R.string.check_network));
             }
         });
+    }*/
+
+
+    public void categoriesList(final Fragment fragment_home, String title, int i, String id, int i1) {
+        Call<Categories[]> response = HttpConstants.getInstance().getApiInstance(fragment_home.getContext()).categoriesList(title,i,id,i1);
+        response.enqueue(new Callback<Categories[]>(){
+            @Override
+            public void onResponse(Call<Categories[]> call, Response<Categories[]> response) {
+                try {
+                    Categories[] postsPojo;
+                    if(response.code()>=400) {
+                        Gson gson = new Gson();
+                        TypeAdapter<Categories[]> errorResponseT = gson.getAdapter(Categories[].class);
+                        postsPojo = errorResponseT.fromJson(response.errorBody().string());
+                    }else{
+                        postsPojo = response.body();
+                        Log.i(TAG, "onResponse: ");
+                    }
+                    //((CategoriesListCallback) fragment_home).CategoriesList(postsPojo);
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Categories[]> call, Throwable t) {
+                ((CategoriesListCallback) fragment_home).CategoriesList(fragment_home.getString(R.string.check_network));
+            }
+        });
     }
 
     public interface BannersListCallback{
-        void BannersList(BannersPojo bannersPojo);
+        void BannersList(Banners[] bannersPojo);
         void BannersList(String string);
 
     }

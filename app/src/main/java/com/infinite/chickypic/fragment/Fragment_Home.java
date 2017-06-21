@@ -22,16 +22,22 @@ import android.widget.Toast;
 import com.infinite.chickypic.R;
 import com.infinite.chickypic.activity.FullScreenFragmentActivity;
 import com.infinite.chickypic.adapter.Adapter_RvHomeScreen;
+import com.infinite.chickypic.http.Banners;
 import com.infinite.chickypic.http.BannersPojo;
 import com.infinite.chickypic.http.HttpConstants;
 import com.infinite.chickypic.httpPojos.HomeCategoryListPojo;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import moe.banana.jsonapi2.Document;
+import moe.banana.jsonapi2.Resource;
+import moe.banana.jsonapi2.ResourceAdapterFactory;
 import rx.Observable;
 import rx.Observer;
 
@@ -50,7 +56,7 @@ public class Fragment_Home extends Fragment implements ViewPager.OnPageChangeLis
     RelativeLayout rlVpHomeScreenHolder;
     Timer timer;
     int page = 0;
-    BannersPojo bannerObject;
+    Banners[] bannerObject;
     private ArrayList<HomeDisplayItems> itemsHome = new ArrayList<>();
     private static final String TAG = "Fragment_Home";
 
@@ -59,6 +65,7 @@ public class Fragment_Home extends Fragment implements ViewPager.OnPageChangeLis
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home,container,false);
         vpHomeSCreen = (ViewPager) view.findViewById(R.id.vpHomeScreen);
+
         rlVpHomeScreenHolder = (RelativeLayout) view.findViewById(R.id.rlVpHomeScreenHolder);
         indicator = (CirclePageIndicator) view.findViewById(R.id.vpIndicatorMainScreen);
         adapterVpHomeScreen = new Adapter_VpHomeScreen(getChildFragmentManager());
@@ -131,7 +138,7 @@ public class Fragment_Home extends Fragment implements ViewPager.OnPageChangeLis
     }
 
     @Override
-    public void BannersList(BannersPojo bannersPojo) {
+    public void BannersList(Banners[] bannersPojo) {
         if(bannersPojo!=null){
             bannerObject = bannersPojo;
         }
@@ -184,7 +191,7 @@ public class Fragment_Home extends Fragment implements ViewPager.OnPageChangeLis
             Fragment fragBanner = new Fragment_HomeScreenBanner();
             Bundle bund = new Bundle();
             if (bannerObject != null) {
-                bund.putString(getString(R.string.key_imgurl), bannerObject.getIncluded().get(position).getAttributes().getFilename());
+                //bund.putString(getString(R.string.key_imgurl), bannerObject.included().get(position).getAttributes().getFilename());
             }
             fragBanner.setArguments(bund);
             return fragBanner;
@@ -195,11 +202,11 @@ public class Fragment_Home extends Fragment implements ViewPager.OnPageChangeLis
             if(bannerObject==null){
                 return 0;
             }
-            if(bannerObject.getIncluded().size()<=5) {
-                return bannerObject.getIncluded().size();
-            }else{
+            /*if(bannerObject.included.size()<=5) {
+                return bannerObject.included.size();
+            }else{*/
                 return 5;
-            }
+           // }
         }
 
         @Override

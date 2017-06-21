@@ -21,6 +21,7 @@ import com.infinite.chickypic.httpPojos.HomeCategoryListPojo;
 import com.infinite.chickypic.view.SlidingTabLayout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -79,19 +80,40 @@ public class Fragment_Sales extends Fragment implements View.OnClickListener,Htt
     public void CategoriesList(HomeCategoryListPojo bannersPojo) {
         List<HomeCategoryListPojo.Datum> items = bannersPojo.getData();
         List<HomeCategoryListPojo.Included> included = bannersPojo.getIncluded();
+        HashMap<String,HomeCategoryListPojo.Included> testMap = new HashMap<>();
+        for (HomeCategoryListPojo.Included inc : included) testMap.put(inc.getId(),inc);
+
+
+
+
+
+
         if(items!=null && items.size()>0){
             for(int i=0;i<items.size();i++){
                 Fragment_Home.HomeDisplayItems homeObj = new Fragment_Home.HomeDisplayItems(items.get(i).getId(),items.get(i).getAttributes().getDescription(),items.get(i).getAttributes().getTitle());
 
                 //TODO it will be nice if we can avoid this loop all together by changing server response
-                for(int j=0;j<included.size();j++){
+                HomeCategoryListPojo.Included k= testMap.get(included.get(i).getId());
+                /*homeObj.setFeaturedUrl(k.getAttributes().getFilename());
+                homeObj.setMainUrl(k.getAttributes().getFilename());*/
+
+                if(k.getId().equalsIgnoreCase(items.get(i).getRelationships().getFeaturedImage().getData().getId())){
+                    homeObj.setFeaturedUrl(k.getAttributes().getFilename());
+                }
+                if(k.getId().equalsIgnoreCase(items.get(i).getRelationships().getMainImage().getData().getId())){
+                    homeObj.setMainUrl(k.getAttributes().getFilename());
+                }
+
+
+
+                /*for(int j=0;j<included.size();j++){
                     if(included.get(j).getId().equalsIgnoreCase(items.get(i).getRelationships().getFeaturedImage().getData().getId())){
                         homeObj.setFeaturedUrl(included.get(j).getAttributes().getFilename());
                     }
                     if(included.get(j).getId().equalsIgnoreCase(items.get(i).getRelationships().getMainImage().getData().getId())){
                         homeObj.setMainUrl(included.get(j).getAttributes().getFilename());
                     }
-                }
+                }*/
                 itemsHome.add(homeObj);
             }
             vpStoreMainAdapter.notifyDataSetChanged();
